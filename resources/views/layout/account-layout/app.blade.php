@@ -18,7 +18,11 @@
             <div class="col-lg-3">
                 <div class="card border-0 shadow mb-4 p-3">
                     <div class="s-body text-center mt-3">
+                        @if(!empty($id->image))
                         <img src="{{ asset('storage/assets/images/' . $id->image) }}" alt="avatar"  class="rounded-circle img-fluid" style="width: 150px;">
+                        @else
+                         <img src="{{ asset('assets/images/placeholder-profile.png') }}" alt="avatar"  class="rounded-circle img-fluid" style="width: 150px;">
+                         @endif
                         <h5 class="mt-3 pb-0">{{ $id->name }}</h5>
                         <p class="text-muted mb-1 fs-6">{{ $id->designation }}</p>
                         <div class="d-flex justify-content-center mb-2">
@@ -38,15 +42,14 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                 <a href="{{ route('account.joblist') }}">My Jobs</a>
                             </li>
+                            @if(Auth::check() && Auth::user()->role == 'Admin')
+                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                    <a href="{{ route('account.category') }}">Jobs Category</a>
+                                </li>
+                            @endif
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                <a href="{{ route('account.category'); }}">Jobs Category</a>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                <a href="job-applied.html">Jobs Applied</a>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                <a href="saved-jobs.html">Saved Jobs</a>
-                            </li>                                                        
+                                <a href="{{ route('account.applied') }}">Jobs Applied</a>
+                            </li>                                                   
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                             <form id="logoutForm" action="{{ route('account.logout') }}" method="POST" style="display: none;">
                                     @csrf
@@ -164,34 +167,9 @@
 
 
     // For Profile Update
-    // $('#passwordForm').on('submit', function (e) {
-    //          e.preventDefault();
-    //     let formData = new FormData(this);
 
-    //         $.ajax({
-    //             url: '{{ route('account.passwordUpdate') }}', // Ensure this route points to your controller method
-    //             type: 'POST',
-    //             data: formData,
-    //             contentType: false,
-    //             processData: false,
-    //             headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-             
-    //             success: function(response) {
-    //                 alert('Password updated successfully!');
-    //                 // Optionally, update the UI or handle other logic after successful update
-    //             },
-    //             error: function(xhr) {
-    //                 // Handle errors, display error messages, etc.
-    //                 console.error(xhr.responseText);
-    //                 alert('Error updating profile. Please try again.');
-    //             }
-    //         });
-    //     });
-
-
-
+    CKEDITOR.replace('description');
+    
 
 });
 

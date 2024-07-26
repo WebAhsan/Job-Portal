@@ -96,7 +96,8 @@
                                 <div class="card border-0 p-3 shadow mb-4">
                                     <div class="card-body">
                                         <h3 class="border-0 fs-5 pb-2 mb-0">{{ $job->job_title }}</h3>
-                                        <p>{{ $job->description }}</p>
+                                  <p>{{ implode(' ', array_slice(str_word_count(strip_tags($job->description), 1), 0, 10)) }}</p>
+
                                         <div class="bg-light p-3 border">
                                             <p class="mb-0">
                                                 <span class="fw-bolder"><i class="fa fa-map-marker"></i></span>
@@ -113,7 +114,7 @@
                                         </div>
 
                                         <div class="d-grid mt-3">
-                                            <a href="job-detail.html" class="btn btn-primary btn-lg">Details</a>
+                                            <a href="{{ route('jobsingle',$job->id) }}" class="btn btn-primary btn-lg">Details</a>
                                         </div>
                                     </div>
                                 </div>
@@ -130,3 +131,6 @@
 </section>
 
 @endsection
+
+
+

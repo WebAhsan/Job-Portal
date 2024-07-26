@@ -23,10 +23,10 @@
                             <label for="password" class="mb-2">Password*</label>
                             <input type="password" name="password" id="password" class="form-control" placeholder="Enter Password">
                         </div> 
-                        <div class="justify-content-between d-flex">
-                            <button type="submit" class="btn btn-primary mt-2">Login</button>
-                            <a href="forgot-password.html" class="mt-3">Forgot Password?</a>
-                        </div>
+                     <div class="justify-content-between d-flex">
+                        <button type="submit" class="btn btn-primary mt-2">Login</button>
+                        <a href="{{ route('password.request') }}" class="mt-3">Forgot Password?</a>
+                    </div>
                     </form>                  
                 </div>
             </div>

@@ -92,7 +92,7 @@ class AccountController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
@@ -100,6 +100,13 @@ class AccountController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
+        // Check if the email already exists
+        $existingUser = User::where('email', $request->email)->first();
+        if ($existingUser) {
+            return response()->json(['errors' => ['email' => ['The email has already been taken.']]], 422);
+        }
+
+        // Create the new user
         User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -155,25 +162,27 @@ class AccountController extends Controller
         }
 
         // Validate request
-        $validator = Validator::make($request->all(), [
-            'newpass' => 'required',
+        $request->validate([
+            'oldpass' => 'required',
+            'newpass' => 'required|string|min:8|confirmed',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Check if the old password matches
+        if (!Hash::check($request->oldpass, $user->password)) {
+            toastr()->error('The old password is incorrect');
+            return redirect()->back();
         }
 
-        // Get the authenticated user's ID
-        $userId = Auth::id();
-
-        // Find the user by ID
-        $user = User::find($userId);
-
-        // Process password Update
-        $user->password = Hash::make($request->password);
+        // Update the user's password
+        $user->password = Hash::make($request->newpass);
         $user->save();
-    }
 
+        toastr()->success('Password change successfully!');
+        return redirect()->back();
+    }
     /**
      * Store a newly created resource in storage.
      */

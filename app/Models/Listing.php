@@ -24,4 +24,9 @@ class Listing extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function jobApplies()
+    {
+        return $this->hasMany(JobApply::class, 'job_id');
+    }
 }

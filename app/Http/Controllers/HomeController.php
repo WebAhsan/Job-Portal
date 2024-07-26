@@ -14,10 +14,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //
+        //Home Page 
+
+        $jobLists = Listing::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $featureJobs = Listing::where('feature', 1)
+            ->where('status', 1)
+            ->get();
+
 
         $categories = Categories::withCount('listings')->get();
-        return view('welcome', compact('categories'));
+        return view('welcome', compact('categories', 'featureJobs', 'jobLists'));
     }
 
 
@@ -33,13 +41,10 @@ class HomeController extends Controller
     {
 
         $query = listing::query();
-
-
         if ($request->filled('keywords')) {
             $query->where('job_title', 'like', '%' . $request->keywords . '%')
                 ->orWhere('description', 'like', '%' . $request->keywords . '%');
         }
-
         if ($request->filled('location')) {
             $query->where('location', $request->location);
         }
@@ -77,7 +82,7 @@ class HomeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function singlejob(Request $request)
+    public function filterjob(Request $request)
     {
         $query = Listing::query();
 
@@ -107,10 +112,8 @@ class HomeController extends Controller
         $listings = $query->get();
 
         $categories = Categories::with('listings')->get();
-
         return view('jobs', compact('categories', 'listings'));
     }
-
 
     /**
      * Store a newly created resource in storage.

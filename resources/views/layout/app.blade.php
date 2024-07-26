@@ -9,8 +9,10 @@
 	<meta name="pinterest" content="nopin" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 	<!-- Fav Icon -->
 	<link rel="shortcut icon" type="image/x-icon" href="#" />
+	 <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body data-instant-intensity="mousedown">
 <header>
@@ -26,18 +28,18 @@
 						<a class="nav-link" aria-current="page" href="{{ route('home.index') }}">Home</a>
 					</li>	
 					<li class="nav-item">
-						<a class="nav-link" aria-current="page" href="jobs.html">Find Jobs</a>
+						<a class="nav-link" aria-current="page" href="{{ route('home.jobs'); }}">Find Jobs</a>
 					</li>										
 				</ul>			
 
 				@auth
 					<a class="btn btn-outline-primary me-2" href="{{ route('account', ['id' => Auth::id()]) }}">Profile</a>
+					<a class="btn btn-primary" href="{{ route('account.jobPost') }}" type="submit">Post a Job</a>
 				@else
 					<a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}">Login</a>
+					<a class="btn btn-outline-primary me-2" href="{{ route('account.register') }}">Register</a>
 				@endauth
-
-	
-				<a class="btn btn-primary" href="post-job.html" type="submit">Post a Job</a>
+				
 			</div>
 		</div>
 	</nav>
@@ -60,6 +62,8 @@
 <script src="{{ asset('assets/js/slick.min.js') }}"></script>
 <script src="{{ asset('assets/js/lightbox.min.js') }}"></script>
 <script src="{{ asset('assets/js/custom.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 
 @yield('scripts')
 
